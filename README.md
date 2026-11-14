@@ -10,13 +10,24 @@ Interface React para o backend Flask Nexora Analytics. O frontend não cria dado
 ## Instalação e execução
 
 ```powershell
-cd frontend
 npm install
 Copy-Item .env.example .env
 npm run dev
 ```
 
-O Vite inicia em `http://localhost:5173`. Ajuste `VITE_API_URL` no `.env` se o backend estiver em outro endereço. O valor padrão é `http://localhost:5000/api`.
+Execute os comandos na raiz deste projeto. O Vite inicia em `http://localhost:5173`. A variável `VITE_API_URL` define a URL base da API e, por padrão, aponta para `http://localhost:5000/api`. Edite essa variável no `.env` se o backend estiver em outro endereço. O arquivo `.env` é local e não deve ser versionado.
+
+## Apresentação pelo celular
+
+Abra **Apresentação** na navegação para exibir um QR code que abre a tela de login no celular. No modo local, inicie o Vite acessível pela rede:
+
+```powershell
+npm run dev -- --host 0.0.0.0
+```
+
+Conecte o celular à mesma rede Wi-Fi do computador. Se a página estiver aberta em `localhost`, o frontend seleciona um endereço IPv4 privado disponível para o QR code; se houver mais de um, escolha o endereço da rede Wi-Fi. Configure o `.env` local com `VITE_API_URL=http://<IP-DO-COMPUTADOR>:5000/api`, substitua o IP se ele mudar e reinicie o Vite para aplicar. O `.env` é ignorado pelo Git, então o endereço local não entra na configuração versionada. Permita conexões do Vite e do backend no firewall, se solicitado. Para apresentações públicas, publique o frontend em HTTPS e configure `VITE_API_URL` com a URL publicada da API.
+
+O QR code não contém tokens nem credenciais. A pessoa que escanear precisará entrar com sua própria conta.
 
 Para validar ou servir a versão de produção:
 
@@ -24,8 +35,6 @@ Para validar ou servir a versão de produção:
 npm run build
 npm run preview
 ```
-
-O login de demonstração documentado pelo backend é `demo@nexora.local` / `Nexora@12345`, se o banco tiver sido inicializado com os dados seed.
 
 ## Telas
 
@@ -36,5 +45,7 @@ O login de demonstração documentado pelo backend é `demo@nexora.local` / `Nex
 - Funil de conversão
 - Inteligência com recomendações e comparações descritivas
 - Download autenticado de CSV
+- Assistente de IA para perguntas sobre dados agregados da conta
+- Apresentação com QR code para abrir o frontend no celular
 
 O JWT é mantido em `sessionStorage` durante a sessão do navegador. O acesso às rotas protegidas é removido ao sair ou após uma resposta 401.

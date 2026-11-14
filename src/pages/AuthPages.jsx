@@ -92,7 +92,12 @@ export function RegisterPage() {
       await register({ name: name.trim(), email: email.trim(), password })
       navigate('/', { replace: true })
     } catch (issue) {
-      setError(issue.message)
+      const responseMessage = issue.data?.message || issue.data?.error
+      setError(responseMessage || (issue.status >= 500
+        ? 'O servidor não conseguiu concluir o cadastro. Tente novamente mais tarde.'
+        : issue.status
+          ? 'Não foi possível criar a conta. Confira os dados e tente novamente.'
+          : issue.message || 'Não foi possível conectar à API. Verifique a conexão e tente novamente.'))
     } finally {
       setBusy(false)
     }

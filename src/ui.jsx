@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import {
-  Activity, BarChart3, ChevronDown, ChevronRight, Download, FileText,
+  Activity, BarChart3, Bot, ChevronDown, ChevronRight, Download, FileText,
   LayoutDashboard, Lightbulb, LogOut, Menu, Megaphone, Users, X,
+  Presentation,
 } from 'lucide-react'
 import { useAuth } from './auth.jsx'
 
@@ -13,6 +14,8 @@ const navigation = [
   { to: '/conversion', label: 'Conversão', icon: Activity },
   { to: '/intelligence', label: 'Inteligência', icon: Lightbulb },
   { to: '/reports', label: 'Relatórios', icon: BarChart3 },
+  { to: '/assistant', label: 'Assistente IA', icon: Bot },
+  { to: '/presentation', label: 'Apresentação', icon: Presentation },
 ]
 
 const titles = {
@@ -22,6 +25,8 @@ const titles = {
   '/conversion': ['Conversão', 'Entenda o percurso entre as etapas do funil.'],
   '/intelligence': ['Inteligência', 'Insights descritivos com base nos dados registrados.'],
   '/reports': ['Relatórios', 'Exporte os dados de publicações da sua conta.'],
+  '/assistant': ['Assistente IA', 'Faça perguntas sobre os dados agregados da sua conta.'],
+  '/presentation': ['Apresentação', 'Compartilhe o acesso ao frontend pelo celular.'],
 }
 
 export function ProtectedLayout() {

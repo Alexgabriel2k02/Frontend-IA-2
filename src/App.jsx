@@ -11,6 +11,8 @@ const CampaignsPage = lazy(() => import('./pages/CampaignsPage.jsx'))
 const ConversionPage = lazy(() => import('./pages/AnalyticsPages.jsx').then((module) => ({ default: module.ConversionPage })))
 const IntelligencePage = lazy(() => import('./pages/AnalyticsPages.jsx').then((module) => ({ default: module.IntelligencePage })))
 const ReportsPage = lazy(() => import('./pages/AnalyticsPages.jsx').then((module) => ({ default: module.ReportsPage })))
+const AssistantPage = lazy(() => import('./pages/AssistantPage.jsx'))
+const PresentationPage = lazy(() => import('./pages/PresentationPage.jsx'))
 
 function Protected({ children }) {
   const { user, loading } = useAuth()
@@ -37,6 +39,8 @@ export default function App() {
           <Route path="conversion" element={<ConversionPage />} />
           <Route path="intelligence" element={<IntelligencePage />} />
           <Route path="reports" element={<ReportsPage />} />
+          <Route path="assistant" element={<AssistantPage />} />
+          <Route path="presentation" element={<PresentationPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

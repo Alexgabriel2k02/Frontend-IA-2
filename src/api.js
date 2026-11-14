@@ -1,4 +1,5 @@
-const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/$/, '')
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/+$/, '')
+const API_CONNECTION_ERROR = 'Não foi possível conectar à API. Confirme se o backend está ativo, se VITE_API_URL usa o IP do computador (não localhost) e se a rede Wi-Fi e o CORS permitem a conexão.'
 
 export class ApiError extends Error {
   constructor(message, status, data) {
@@ -6,6 +7,17 @@ export class ApiError extends Error {
     this.name = 'ApiError'
     this.status = status
     this.data = data
+  }
+}
+
+async function fetchApi(url, options) {
+  try {
+    return await fetch(url, options)
+  } catch (issue) {
+    if (issue instanceof TypeError) {
+      throw new ApiError(API_CONNECTION_ERROR, 0)
+    }
+    throw issue
   }
 }
 
@@ -17,7 +29,7 @@ async function request(path, { method = 'GET', body, authenticated = true, ...op
     if (token) headers.set('Authorization', `Bearer ${token}`)
   }
 
-  const response = await fetch(`${API_URL}${path}`, {
+  const response = await fetchApi(`${API_URL}${path}`, {
     ...options,
     method,
     headers,
@@ -59,9 +71,10 @@ export const api = {
   conversion: () => request('/analysis/conversion'),
   breakdown: (by) => request(`/analysis/breakdown?by=${encodeURIComponent(by)}`),
   recommendations: () => request('/recommendations'),
+  assistantChat: (message) => request('/assistant/chat', { method: 'POST', body: { message } }),
   async downloadCsv() {
     const token = sessionStorage.getItem('nexora_access_token')
-    const response = await fetch(`${API_URL}/reports/publications.csv`, {
+    const response = await fetchApi(`${API_URL}/reports/publications.csv`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     })
     if (response.status === 401) {
